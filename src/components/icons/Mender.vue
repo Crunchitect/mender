@@ -1,0 +1,174 @@
+<template>
+    <div class="mender-outer">
+        <svg class="mender-inner" width="32" height="32" viewBox="0 0 8.4666667 8.4666667" version="1.1" id="svg5">
+            <defs id="defs2" />
+            <g style="display: inline">
+                <rect
+                    y="0"
+                    x="0"
+                    height="8.4666662"
+                    width="8.4666662"
+                    id="rect17204"
+                    style="
+                        fill: #989aa4;
+                        fill-opacity: 1;
+                        fill-rule: evenodd;
+                        stroke: none;
+                        stroke-width: 0.1;
+                        stroke-linejoin: bevel;
+                    "
+                />
+                <path
+                    id="path879"
+                    d="M 0,0.13229167 V 8.4666668 H 8.3343752 L 7.1437502,7.2760418 7.0114585,7.4083335 H 1.4552083 l -0.396875,-0.396875 1e-7,-5.5562501 L 1.190625,1.3229167 0,0.13229167 1.190625,1.3229167 1.3229167,1.190625 2.2489584,2.1166667 h 3.7041665 l 0.3968753,0.396875 V 6.2177083 L 7.2760419,7.1437502 7.4083335,7.0114585 V 1.4552083 l -0.396875,-0.396875 -5.5562501,1e-7 L 1.3229167,1.190625 2.2489584,2.1166667 2.1166667,2.2489584 v 3.7041665 l 0.396875,0.3968753 H 6.2177083 L 4.8947916,5.0270833 4.6302083,5.2916666 h -0.79375 L 3.175,4.6302083 v -0.79375 L 3.4395833,3.571875 2.1166667,2.2489584 2.2489584,2.1166667 1.3229167,1.190625 1.190625,1.3229167 Z"
+                    style="
+                        fill: #6e7080;
+                        fill-opacity: 1;
+                        stroke: none;
+                        stroke-width: 0.264583px;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-opacity: 1;
+                    "
+                />
+                <path
+                    id="path879-3"
+                    d="M 8.4666669,8.3343752 8.4666667,0 H 0.1322919 L 1.190625,1.0583334 1.3229167,1.190625 1.4552084,1.0583334 l 5.55625,-1e-7 0.396875,0.396875 1e-7,5.5562502 -0.1322916,0.1322917 1.190625,1.190625 -1.190625,-1.0583334 H 7.1437502 L 6.2177083,6.3500001 H 2.5135418 L 2.1166665,5.9531251 V 2.2489585 L 1.190625,1.3229167 1.0583334,1.4552084 l -6e-7,5.5562501 0.3968754,0.396875 H 7.0114585 L 7.1437502,7.2760418 6.2177083,6.3500001 6.35,6.2177084 V 2.5135419 L 5.953125,2.1166666 H 2.2489584 L 3.5718751,3.4395835 3.8364584,3.1750002 h 0.79375 l 0.6614583,0.6614583 v 0.79375 L 5.0270834,4.8947918 6.35,6.2177084 6.2177083,6.3500001 7.1437502,7.2760418 h 0.1322917 z"
+                    style="
+                        display: inline;
+                        fill: #b0bac0;
+                        fill-opacity: 1;
+                        stroke: none;
+                        stroke-width: 0.264583px;
+                        stroke-linecap: butt;
+                        stroke-linejoin: miter;
+                        stroke-opacity: 1;
+                    "
+                />
+                <g id="g31112">
+                    <path
+                        id="path21436"
+                        d="m 2.38125,0 v 0.396875 l 0.6614583,0.6614583 h 2.38125 L 6.0854166,0.396875 V 0 H 2.38125"
+                        style="
+                            fill: #84f491;
+                            stroke: none;
+                            stroke-width: 0.264583px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                            stroke-opacity: 1;
+                            fill-opacity: 1;
+                        "
+                    />
+                    <path
+                        id="path27401"
+                        d="M 3.0427083,1.0583333 4.1010416,2.1166667 H 4.3656249 L 5.4239583,1.0583333"
+                        style="
+                            fill: #62ae7f;
+                            stroke: none;
+                            stroke-width: 0.264583px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                            stroke-opacity: 1;
+                            fill-opacity: 1;
+                        "
+                    />
+                </g>
+                <g transform="rotate(90,4.2333333,4.2333335)" style="display: inline" id="g31112-6">
+                    <path
+                        id="path21436-7"
+                        d="m 2.38125,0 v 0.396875 l 0.6614583,0.6614583 h 2.38125 L 6.0854166,0.396875 V 0 H 2.38125"
+                        style="
+                            fill: #84f491;
+                            fill-opacity: 1;
+                            stroke: none;
+                            stroke-width: 0.264583px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                            stroke-opacity: 1;
+                        "
+                    />
+                    <path
+                        id="path27401-5"
+                        d="M 3.0427083,1.0583333 4.1010416,2.1166667 H 4.3656249 L 5.4239583,1.0583333"
+                        style="
+                            fill: #62ae7f;
+                            fill-opacity: 1;
+                            stroke: none;
+                            stroke-width: 0.264583px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                            stroke-opacity: 1;
+                        "
+                    />
+                </g>
+                <g transform="rotate(180,4.2333334,4.2333334)" style="display: inline" id="g31112-6-3">
+                    <path
+                        id="path21436-7-5"
+                        d="m 2.38125,0 v 0.396875 l 0.6614583,0.6614583 h 2.38125 L 6.0854166,0.396875 V 0 H 2.38125"
+                        style="
+                            fill: #62ae7f;
+                            fill-opacity: 1;
+                            stroke: none;
+                            stroke-width: 0.264583px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                            stroke-opacity: 1;
+                        "
+                    />
+                    <path
+                        id="path27401-5-6"
+                        d="M 3.0427083,1.0583333 4.1010416,2.1166667 H 4.3656249 L 5.4239583,1.0583333"
+                        style="
+                            fill: #84f491;
+                            fill-opacity: 1;
+                            stroke: none;
+                            stroke-width: 0.264583px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                            stroke-opacity: 1;
+                        "
+                    />
+                </g>
+                <g transform="rotate(-90,4.1671876,4.1671875)" style="display: inline" id="g31112-6-3-2">
+                    <path
+                        id="path21436-7-5-9"
+                        d="M 2.2489584,-8.0000002e-8 V 0.39687492 L 2.9104167,1.0583332 h 2.38125 L 5.953125,0.39687492 V -8.0000002e-8 H 2.2489584"
+                        style="
+                            fill: #62ae7f;
+                            fill-opacity: 1;
+                            stroke: none;
+                            stroke-width: 0.264583px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                            stroke-opacity: 1;
+                        "
+                    />
+                    <path
+                        id="path27401-5-6-1"
+                        d="M 2.9104167,1.0583332 3.96875,2.1166666 H 4.2333333 L 5.2916667,1.0583332"
+                        style="
+                            fill: #84f491;
+                            fill-opacity: 1;
+                            stroke: none;
+                            stroke-width: 0.264583px;
+                            stroke-linecap: butt;
+                            stroke-linejoin: miter;
+                            stroke-opacity: 1;
+                        "
+                    />
+                </g>
+            </g>
+            <g id="layer1" style="display: none; opacity: 0.5">
+                <image
+                    y="-2.3764649e-07"
+                    x="-2.3764649e-07"
+                    id="image832"
+                    style="image-rendering: optimizeSpeed"
+                    preserveAspectRatio="none"
+                    height="8.4666672"
+                    width="8.4666672"
+                />
+            </g>
+        </svg>
+    </div>
+</template>
