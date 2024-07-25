@@ -24,6 +24,6 @@
         <Navbar />
         <RouterView />
 
-        <div ref="mouse" class="absolute rounded-full w-8 aspect-square bg-white blur-lg left-0 top-0"></div>
+        <div ref="mouse" class="absolute rounded-full w-8 aspect-square bg-white blur-md left-0 top-0"></div>
     </div>
 </template>
