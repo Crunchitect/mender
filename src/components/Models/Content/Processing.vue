@@ -10,13 +10,15 @@
     const emit = defineEmits<{
         exit: [];
     }>();
+
+    onMounted(() => findObjects());
 </script>
 
 <template>
     <div class="flex flex-col">
         <Glassy class="z-20 m-4 p-4 flex flex-wrap place-content-center">
-            <!-- <canvas width="600" height="600" id="hey"></canvas> -->
-            <img class="rounded" :src="url" alt="" id="findObjectSrc" />
+            <canvas width="600" height="600" id="hey"></canvas>
+            <img class="rounded max-h-[60vh]" :src="url" alt="" id="findObjectSrc" />
         </Glassy>
         <div class="flex flex-row gap-4 justify-evenly">
             <Glassy class="flex flex-wrap justify-center items-center">

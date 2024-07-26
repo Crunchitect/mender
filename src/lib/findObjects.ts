@@ -1,8 +1,8 @@
-import cv from 'opencv-ts';
+import cv, { type Mat } from 'opencv-ts';
 
-export function findObjects() {
-    const img = cv.imread('findObjectSrc');
+type PointArr = [number, number][];
 
+export function detectEdges(img: Mat): Mat {
     const cannyCoeff = 0.33;
 
     const grayImg = new cv.Mat();
@@ -17,11 +17,15 @@ export function findObjects() {
     const edges = new cv.Mat();
     cv.Canny(grayImg, edges, loThreshold, hiThreshold);
     cv.dilate(edges, edges, morphCross);
+    return edges;
+}
 
+export function findBiggestRectangle(edges: Mat): Mat | null {
     const contours = new cv.MatVector();
     const hierarchy = new cv.Mat();
     cv.findContours(edges, contours, hierarchy, cv.RETR_LIST, cv.CHAIN_APPROX_SIMPLE);
-    let glassContour = null;
+
+    let biggestRectangle = null;
 
     for (let i = 0; i < contours.size(); i++) {
         const contour = contours.get(i);
@@ -29,21 +33,76 @@ export function findObjects() {
         const approxPoly = new cv.Mat();
         cv.approxPolyDP(contour, approxPoly, 0.02 * perimiter, true);
         if (approxPoly.size().height === 4) {
-            if (!glassContour || cv.contourArea(glassContour) < cv.contourArea(approxPoly)) {
-                glassContour = approxPoly.clone();
+            if (!biggestRectangle || cv.contourArea(biggestRectangle) < cv.contourArea(approxPoly)) {
+                biggestRectangle = approxPoly.clone();
             }
         }
     }
 
-    const points = [];
-    for (let j = 0; j < glassContour?.data32S.length!; j += 2) {
-        let point = new cv.Point(glassContour?.data32S[j]!, glassContour?.data32S[j + 1]!);
-        // cv.circle(img, point, 20, new cv.Scalar(1, 1, 1, 1), 10);
+    return biggestRectangle;
+}
+
+export function getRectPoints(contour: Mat, debug: boolean = false, debugImg: Mat | null = null): PointArr {
+    const points: PointArr = [];
+    for (let j = 0; j < contour?.data32S.length!; j += 2) {
+        let point = <[number, number]>[contour?.data32S[j]!, contour?.data32S[j + 1]];
+        if (debug) cv.circle(debugImg!, new cv.Point(point[0], point[1]), 20, new cv.Scalar(1, 1, 1, 1), 10);
         points.push(point);
     }
-    // cv.imshow('hey', img);
 
     return points;
+}
+
+export function sortRectanglePoints(points: PointArr): PointArr {
+    const pointSum = points.map((point) => point[0] + point[1]);
+    const pointDiff = points.map((point) => Math.abs(point[0] - point[1]));
+
+    const topLeft = points[pointSum.indexOf(Math.min(...pointSum))];
+    const topRight = points[pointDiff.indexOf(Math.min(...pointDiff))];
+    const bottomLeft = points[pointDiff.indexOf(Math.max(...pointDiff))];
+    const bottomRight = points[pointSum.indexOf(Math.max(...pointSum))];
+
+    return [topLeft, topRight, bottomRight, bottomLeft];
+}
+
+export function getSortedRectPoints(contour: Mat, debug: boolean = false, debugImg: Mat | null = null): PointArr {
+    return sortRectanglePoints(getRectPoints(contour, debug, debugImg));
+}
+
+export function clockwiseSquareMat(size: number): Mat {
+    return cv.matFromArray(1, 4, cv.CV_32FC2, [0, 0, 0, size, size, size, size, 0]);
+}
+
+export function cropToPoints(img: Mat, points: PointArr, size: number): Mat {
+    const pointsMat = cv.matFromArray(1, 4, cv.CV_32FC2, points.flat(2));
+    const croppedPts = clockwiseSquareMat(size);
+    console.log(pointsMat, croppedPts);
+    const croppedMatrix = cv.getPerspectiveTransform(pointsMat, croppedPts);
+    const cropped = new cv.Mat();
+    cv.warpPerspective(
+        img,
+        cropped,
+        croppedMatrix,
+        new cv.Size(225, 225),
+        cv.INTER_LINEAR,
+        cv.BORDER_CONSTANT,
+        new cv.Scalar()
+    );
+    return cropped;
+}
+
+export function findObjects() {
+    const img = cv.imread('findObjectSrc');
+
+    const edges = detectEdges(img);
+    const scanPlateContour = findBiggestRectangle(edges);
+    const orderedPoints = getSortedRectPoints(scanPlateContour!);
+
+    const imgSize = 225;
+    const scanPlate = cropToPoints(img, orderedPoints, imgSize);
+    cv.imshow('hey', scanPlate);
+
+    return scanPlate;
 }
 
 export default findObjects;
