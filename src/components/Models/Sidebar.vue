@@ -24,9 +24,15 @@
         <i @click="toggleNav" class="fas fa-chevron-left p-2 inline"></i>
         <div class="nav-inner" v-show="navOpened">
             <h1 class="p-2 font-bold inline m-4 text-center truncate">Saved Models</h1>
-            <div class="h-screen flex flex-col p-2 gap-2 overflow-auto z-10">
-                <Glassy v-for="model in savedModels">
-                    <div class="flex flex-wrap flex-col items-center justify-evenly gap-4 before:content-['']">
+            <div class="h-[45vw] flex flex-col p-2 gap-2 overflow-auto z-10">
+                <Glassy v-for="(model, idx) in savedModels">
+                    <div
+                        class="relative flex flex-wrap flex-shrink flex-col items-center justify-evenly gap-4 before:content-[''] min-h-24 min-w-48"
+                    >
+                        <i
+                            @click="savedModels = savedModels?.filter((_, i) => i !== idx)"
+                            class="fas fa-trash absolute top-0 left-0 p-4 hover:text-red-400"
+                        ></i>
                         <svg class="aspect-square" width="20%" height="20%" :viewBox="getBBox(model)">
                             <polyline :points="model.join(' ')" fill="white"></polyline>
                         </svg>
