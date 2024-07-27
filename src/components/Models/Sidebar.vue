@@ -1,10 +1,22 @@
 <script lang="ts" setup>
     import { ref, computed } from 'vue';
-    import Glassy from '../Glassy.vue';
+    import { zip } from '@/lib/utils';
+    import { savedModels } from '@/data/SavedModels';
+    import Glassy from '@/components/Glassy.vue';
 
     const navOpened = ref(true);
     const cssNav = computed(() => +navOpened.value);
     const toggleNav = () => (navOpened.value = !navOpened.value);
+
+    const getBBox = (model: [number, number][]) => {
+        const [x, y] = zip(...model);
+        return `0 0 ${Math.max(...x)} ${Math.max(...y)}`;
+    };
+
+    const getSize = (model: [number, number][]) => {
+        const [x, y] = zip(...model);
+        return [~~Math.max(...x), ~~Math.max(...y)];
+    };
 </script>
 
 <template>
@@ -13,13 +25,14 @@
         <div class="nav-inner" v-show="navOpened">
             <h1 class="p-2 font-bold inline m-4 text-center truncate">Saved Models</h1>
             <div class="h-screen flex flex-col p-2 gap-2 overflow-auto z-10">
-                <div v-for="i in 99">
-                    <Glassy class="z-20">
-                        <div class="m-2">
-                            <p class="text-sm">i don know what to put here, skibidi dop dop yes yes</p>
-                        </div>
-                    </Glassy>
-                </div>
+                <Glassy v-for="model in savedModels">
+                    <div class="flex flex-wrap flex-col items-center justify-evenly gap-4 before:content-['']">
+                        <svg class="aspect-square" width="20%" height="20%" :viewBox="getBBox(model)">
+                            <polyline :points="model.join(' ')" fill="white"></polyline>
+                        </svg>
+                        <p>Size: {{ getSize(model)[0] }}mm x {{ getSize(model)[1] }}mm</p>
+                    </div>
+                </Glassy>
             </div>
         </div>
     </div>

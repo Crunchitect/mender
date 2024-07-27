@@ -1,6 +1,7 @@
 import cv, { type Mat } from 'opencv-ts';
 
 type PointArr = [number, number][];
+const epsilon = 0.02;
 
 export function detectEdges(img: Mat): Mat {
     const cannyCoeff = 0.33;
@@ -17,6 +18,8 @@ export function detectEdges(img: Mat): Mat {
     const edges = new cv.Mat();
     cv.Canny(grayImg, edges, loThreshold, hiThreshold);
     cv.dilate(edges, edges, morphCross);
+    grayImg.delete();
+    morphCross.delete();
     return edges;
 }
 
@@ -31,18 +34,22 @@ export function findBiggestRectangle(edges: Mat): Mat | null {
         const contour = contours.get(i);
         const perimiter = cv.arcLength(contour, true);
         const approxPoly = new cv.Mat();
-        cv.approxPolyDP(contour, approxPoly, 0.02 * perimiter, true);
+        cv.approxPolyDP(contour, approxPoly, epsilon * perimiter, true);
         if (approxPoly.size().height === 4) {
             if (!biggestRectangle || cv.contourArea(biggestRectangle) < cv.contourArea(approxPoly)) {
                 biggestRectangle = approxPoly.clone();
             }
         }
+        contour.delete();
+        approxPoly.delete();
     }
+    contours.delete();
+    hierarchy.delete();
 
     return biggestRectangle;
 }
 
-export function getRectPoints(contour: Mat, debug: boolean = false, debugImg: Mat | null = null): PointArr {
+export function getPoints(contour: Mat, debug: boolean = false, debugImg: Mat | null = null): PointArr {
     const points: PointArr = [];
     for (let j = 0; j < contour?.data32S.length!; j += 2) {
         let point = <[number, number]>[contour?.data32S[j]!, contour?.data32S[j + 1]];
@@ -66,7 +73,7 @@ export function sortRectanglePoints(points: PointArr): PointArr {
 }
 
 export function getSortedRectPoints(contour: Mat, debug: boolean = false, debugImg: Mat | null = null): PointArr {
-    return sortRectanglePoints(getRectPoints(contour, debug, debugImg));
+    return sortRectanglePoints(getPoints(contour, debug, debugImg));
 }
 
 export function clockwiseSquareMat(size: number): Mat {
@@ -76,7 +83,6 @@ export function clockwiseSquareMat(size: number): Mat {
 export function cropToPoints(img: Mat, points: PointArr, size: number): Mat {
     const pointsMat = cv.matFromArray(1, 4, cv.CV_32FC2, points.flat(2));
     const croppedPts = clockwiseSquareMat(size);
-    console.log(pointsMat, croppedPts);
     const croppedMatrix = cv.getPerspectiveTransform(pointsMat, croppedPts);
     const cropped = new cv.Mat();
     cv.warpPerspective(
@@ -88,21 +94,78 @@ export function cropToPoints(img: Mat, points: PointArr, size: number): Mat {
         cv.BORDER_CONSTANT,
         new cv.Scalar()
     );
+    pointsMat.delete();
+    croppedPts.delete();
+    croppedMatrix.delete();
     return cropped;
+}
+
+export function sortPointsCW(points: PointArr): PointArr {
+    const centroid = points.reduce((a, c) => [a[0] + c[0], a[1] + c[1]]).map((pos) => pos / points.length);
+    const centeredPoints = points.map((point) => <[number, number]>[point[0] - centroid[0], point[1] - centroid[1]]);
+    const sortedCenteredPoints = centeredPoints.sort((a, b) => {
+        const phi = Math.atan2(a[1], a[0]);
+        const psi = Math.atan2(b[1], b[0]);
+        return phi - psi;
+    });
+    return sortedCenteredPoints.map((point) => [point[0] + centroid[0], point[1] + centroid[1]]);
+}
+
+export function sortPointsCCW(points: PointArr): PointArr {
+    const centroid = points.reduce((a, c) => [a[0] + c[0], a[1] + c[1]]).map((pos) => pos / points.length);
+    const centeredPoints = points.map((point) => <[number, number]>[point[0] - centroid[0], point[1] - centroid[1]]);
+    const sortedCenteredPoints = centeredPoints.sort((a, b) => {
+        const phi = Math.atan2(a[1], a[0]);
+        const psi = Math.atan2(b[1], b[0]);
+        return psi - phi;
+    });
+    return sortedCenteredPoints.map((point) => [point[0] + centroid[0], point[1] + centroid[1]]);
+}
+
+export function detectObjects(img: Mat, debug: boolean = false, debugImg: Mat | null = null): PointArr[] {
+    const binary = new cv.Mat();
+    cv.threshold(img, binary, 150, 255, cv.THRESH_BINARY);
+    const edges = detectEdges(binary);
+    const contours = new cv.MatVector(),
+        hierarchy = new cv.Mat();
+    cv.findContours(edges, contours, hierarchy, cv.RETR_EXTERNAL, cv.CHAIN_APPROX_SIMPLE);
+    if (debug) {
+        cv.drawContours(debugImg!, contours, -1, new cv.Scalar(128));
+    }
+    hierarchy.delete();
+    const shapes = [];
+    for (let i = 0; i < contours.size(); i++) {
+        const contour = contours.get(i);
+        const perimiter = cv.arcLength(contour, true);
+        const approxPoly = new cv.Mat();
+        cv.approxPolyDP(contour, approxPoly, epsilon * 3 * perimiter, true);
+        const points = sortPointsCW(getPoints(approxPoly));
+        shapes.push(points);
+        contour.delete();
+        approxPoly.delete();
+    }
+    cleanup(binary, edges);
+    return shapes;
+}
+
+export function cleanup(...mats: Mat[]) {
+    for (const mat of mats) mat.delete();
 }
 
 export function findObjects() {
     const img = cv.imread('findObjectSrc');
-
     const edges = detectEdges(img);
     const scanPlateContour = findBiggestRectangle(edges);
     const orderedPoints = getSortedRectPoints(scanPlateContour!);
 
     const imgSize = 225;
     const scanPlate = cropToPoints(img, orderedPoints, imgSize);
-    cv.imshow('hey', scanPlate);
+    const buildObjects = detectObjects(scanPlate, true, scanPlate);
+    // cv.imshow('hey', scanPlate);
+    // console.log(buildObjects);
 
-    return scanPlate;
+    cleanup(img, edges, scanPlateContour!, scanPlate);
+    return buildObjects;
 }
 
 export default findObjects;

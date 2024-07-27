@@ -9,8 +9,9 @@
     }>();
 
     const camera = ref<InstanceType<typeof Camera>>();
-    const captureCamera = (blob: Blob) => {
-        emit('url', URL.createObjectURL(blob));
+    const snapshot = async () => {
+        const blob = await camera!.value?.snapshot();
+        emit('url', URL.createObjectURL(blob!));
     };
 </script>
 
@@ -18,16 +19,16 @@
     <div>
         <div class="flex flex-col h-full">
             <Glassy class="max-h-[80vh]">
-                <Camera @snapshot="captureCamera" ref="camera" class="h-3/5 aspect-video" />
+                <Camera ref="camera" class="h-3/5 aspect-video" />
             </Glassy>
-            <center class="flex">
-                <Glassy class="w-fit px-4 m-4 flex-shrink">
+            <div class="flex justify-center">
+                <Glassy class="w-fit px-4 m-4 flex-shrink flex justify-center">
                     <button @click="emit('exit')"><i class="fas fa-chevron-left"></i> Back</button>
                 </Glassy>
-                <Glassy class="w-fit px-4 m-4 flex-shrink">
-                    <button @click="camera?.snapshot()"><i class="fas fa-cheese"></i> Cheese!</button>
+                <Glassy class="w-fit px-4 m-4 flex-shrink flex justify-center">
+                    <button @click="snapshot"><i class="fas fa-cheese"></i> Cheese!</button>
                 </Glassy>
-            </center>
+            </div>
         </div>
     </div>
 </template>

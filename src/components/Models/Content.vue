@@ -2,7 +2,7 @@
     import { ref } from 'vue';
 
     import UploadFile from './Content/UploadFile.vue';
-    import Camera from './Content/Camera.vue';
+    import Camera from './Content/CameraComp.vue';
     import Processing from './Content/Processing.vue';
 
     const url = ref('');
