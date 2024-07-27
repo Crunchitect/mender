@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import { findObjects } from '@/lib/findObjects';
-    import { saveObjects } from '@/data/SavedModels';
+    import { saveObjects, savedModels } from '@/data/SavedModels';
     import Glassy from '@/components/Glassy.vue';
 
     const props = defineProps<{
@@ -29,9 +29,16 @@
                     class="flex flex-wrap place-content-center gap-2 align-middle"
                     @click="saveObjects(findObjects())"
                 >
-                    <i class="fas fa-wand-magic-sparkles align-middle"></i> Find Objects
+                    <i class="fas fa-screwdriver-wrench"></i> Find Objects
                 </button>
             </Glassy>
         </div>
+        <button
+            class="flex-shrink h-fit w-full border-green-950 border-2 bg-green-500/30 hover:bg-green-500 p-2 px-4 my-2 rounded-lg transition-all disabled:opacity-10 disabled:bg-green-500/30"
+            :disabled="!savedModels?.length"
+            @click="$router.push('/repair')"
+        >
+            <i class="fas fa-screwdriver-wrench"></i> Start Repairing!
+        </button>
     </div>
 </template>
