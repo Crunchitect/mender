@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import Glassy from '@/components/Glassy.vue';
-    import type Camera from 'simple-vue-camera';
+    import Camera from 'simple-vue-camera';
     import { ref } from 'vue';
 
     const emit = defineEmits<{

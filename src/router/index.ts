@@ -11,8 +11,13 @@ const router = createRouter({
         {
             path: '/repair',
             name: 'Repair',
-            component: () => import('@/views/Repair.vue')
-        }
+            component: () => import('@/views/Repair.vue'),
+        },
+        {
+            path: '/print',
+            name: '3D Print',
+            component: () => import('@/views/Print.vue'),
+        },
     ],
 });
 
