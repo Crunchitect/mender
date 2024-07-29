@@ -31,8 +31,8 @@
         printTime.value = 30;
 
         const brokenModels = mapModels(savedModels.value!, repairSidebar.value.detectedObjects)
-            .filter(([, , coeff]) => coeff <= repairConfig.value.brokenIndex!)
-            .map(([templ, , ,]) => templ);
+            .filter(([, , coeff]) => coeff >= repairConfig.value.brokenIndex!)
+            .map(([templ, , coeff]) => ({ model: templ, coeff: coeff }));
         printConfig.value.brokenModels = brokenModels;
         router.push('/print');
     };

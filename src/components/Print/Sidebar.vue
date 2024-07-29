@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+    import Glassy from '../Glassy.vue';
     import { printConfig } from '@/data/PrintConfig';
     import { ref, computed } from 'vue';
     import { zip } from '@/lib/utils';
@@ -28,10 +29,11 @@
                     <div
                         class="relative flex flex-wrap flex-shrink flex-col items-center justify-evenly gap-4 before:content-[''] min-h-24 min-w-48"
                     >
-                        <svg class="aspect-square" width="20%" height="20%" :viewBox="getBBox(model)">
-                            <polyline :points="model.join(' ')" fill="white"></polyline>
+                        <svg class="aspect-square" width="20%" height="20%" :viewBox="getBBox(model.model)">
+                            <polyline :points="model.model.join(' ')" fill="white"></polyline>
                         </svg>
-                        <p>Size: {{ getSize(model)[0] }}mm x {{ getSize(model)[1] }}mm</p>
+                        <p>Size: {{ getSize(model.model)[0] }}mm x {{ getSize(model.model)[1] }}mm</p>
+                        <p>Broken Coeff.: {{ model.coeff }}</p>
                     </div>
                 </Glassy>
             </div>
