@@ -9,6 +9,10 @@ const router = createRouter({
             component: () => import('@/views/Models.vue'),
         },
         {
+            path: '/models',
+            redirect: '/',
+        },
+        {
             path: '/repair',
             name: 'Repair',
             component: () => import('@/views/Repair.vue'),
