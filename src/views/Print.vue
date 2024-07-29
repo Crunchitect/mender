@@ -6,7 +6,7 @@
 
 <template>
     <div class="w-full h-full flex gap-4">
-        <Content />
         <Sidebar />
+        <Content />
     </div>
 </template>

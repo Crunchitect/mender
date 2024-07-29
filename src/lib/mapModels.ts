@@ -1,11 +1,11 @@
 import { repairConfig } from '@/data/RepairConfig';
 import { cross } from './utils';
 import cv from 'opencv-ts';
-import { toRaw } from 'vue';
 
 export function mapModels(template: [number, number][][], brokenModels: [number, number][][]) {
-    const templateCopy = structuredClone(toRaw(template));
-    const brokenModelsCopy = structuredClone(toRaw(brokenModels));
+    // console.log(template, brokenModels);
+    const templateCopy = structuredClone(template);
+    const brokenModelsCopy = structuredClone(brokenModels);
     const mappedModels: [[number, number][], [number, number][], number][] = [];
     while (templateCopy.length && brokenModelsCopy.length) {
         let crossPoly = cross(templateCopy, brokenModelsCopy);
@@ -29,6 +29,6 @@ export function mapModels(template: [number, number][][], brokenModels: [number,
         templateCopy.splice(templIndex, 1);
         brokenModelsCopy.splice(brokenIndex, 1);
     }
-    console.log(mappedModels);
+    // console.log(mappedModels);
     return mappedModels;
 }

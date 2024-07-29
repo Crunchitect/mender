@@ -25,7 +25,14 @@
         <div class="nav-inner" v-show="navOpened">
             <h1 class="font-bold text-2xl m-4">{{ printConfig.brokenModels.length }} model(s) to print.</h1>
             <div class="h-[90vh] flex flex-col p-2 gap-2 overflow-auto z-10">
-                <Glassy v-for="model in printConfig.brokenModels">
+                <Glassy
+                    @click="
+                        () => {
+                            printConfig.selectedIndex = index;
+                        }
+                    "
+                    v-for="(model, index) in printConfig.brokenModels"
+                >
                     <div
                         class="relative flex flex-wrap flex-shrink flex-col items-center justify-evenly gap-4 before:content-[''] min-h-24 min-w-48"
                     >
@@ -33,7 +40,7 @@
                             <polyline :points="model.model.join(' ')" fill="white"></polyline>
                         </svg>
                         <p>Size: {{ getSize(model.model)[0] }}mm x {{ getSize(model.model)[1] }}mm</p>
-                        <p>Broken Coeff.: {{ model.coeff }}</p>
+                        <p>Broken Coeff.: {{ model.coeff.toPrecision(3) }}</p>
                     </div>
                 </Glassy>
             </div>

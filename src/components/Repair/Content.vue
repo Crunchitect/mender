@@ -3,6 +3,7 @@
     import Camera from 'simple-vue-camera';
     import Timer from '@/components/Repair/Content/Timer.vue';
     import { ref, watch } from 'vue';
+    import { deepToRaw } from '@/lib/utils';
     import { useRouter } from 'vue-router';
     import { findObjects } from '@/lib/findObjects';
     import { repairConfig, repairSidebar } from '@/data/RepairConfig';
@@ -29,8 +30,7 @@
     const preparePrintModels = async () => {
         timer.value?.resetTimer();
         printTime.value = 30;
-
-        const brokenModels = mapModels(savedModels.value!, repairSidebar.value.detectedObjects)
+        const brokenModels = mapModels(deepToRaw(savedModels.value!), deepToRaw(repairSidebar.value.detectedObjects))
             .filter(([, , coeff]) => coeff >= repairConfig.value.brokenIndex!)
             .map(([templ, , coeff]) => ({ model: templ, coeff: coeff }));
         printConfig.value.brokenModels = brokenModels;
