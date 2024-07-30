@@ -2,7 +2,7 @@
     import { ref, onMounted } from 'vue';
     import { RouterView } from 'vue-router';
     import Navbar from '@/components/Navbar.vue';
-    import { savedModels } from './data/SavedModels';
+    import { templateFiles } from './data/SavedModels';
 
     const mouse = ref<HTMLDivElement>();
 
@@ -20,7 +20,7 @@
     };
 
     onMounted(() => {
-        savedModels.value = JSON.parse(localStorage.getItem('savedModels')!);
+        templateFiles.value = JSON.parse(localStorage.getItem('templateFiles')!) ?? { main: {} };
     });
 </script>
 

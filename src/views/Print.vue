@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-    import { printConfig } from '@/data/PrintConfig';
     import Content from '@/components/Print/Content.vue';
     import Sidebar from '@/components/Print/Sidebar.vue';
 </script>

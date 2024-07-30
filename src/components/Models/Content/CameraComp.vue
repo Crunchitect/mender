@@ -19,7 +19,7 @@
     <div>
         <div class="flex flex-col h-full">
             <Glassy class="max-h-[80vh]">
-                <Camera ref="camera" class="h-3/5 aspect-video" />
+                <Camera ref="camera" />
             </Glassy>
             <div class="flex justify-center">
                 <Glassy class="w-fit px-4 m-4 flex-shrink flex justify-center">

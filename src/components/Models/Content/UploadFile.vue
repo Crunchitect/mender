@@ -24,10 +24,15 @@
 
 <template>
     <div>
-        <h1 class="font-bold text-center text-lg mb-2">Upload a picture to scan.</h1>
+        <h1 class="font-bold text-center text-lg mb-2">Upload/Take a template picture to scan for models</h1>
         <div class="flex flex-col gap-2 w-full z-10 h-full">
             <Glassy class="flex-1 relative z-10">
-                <input @change="updateFiles" type="file" class="absolute w-full h-full opacity-0 z-20" />
+                <input
+                    @change="updateFiles"
+                    type="file"
+                    accept="image/*"
+                    class="absolute w-full h-full opacity-0 z-20"
+                />
                 <div class="w-full h-full flex flex-col flex-wrap place-content-center gap-2">
                     <i class="fas fa-file-import text-6xl text-center"></i>
                     <p class="text-zinc-500 opacity-1/2 text-xs text-center">Upload a File</p>

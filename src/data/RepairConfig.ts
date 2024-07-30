@@ -8,5 +8,6 @@ export const repairConfig = ref({
 });
 
 export const repairSidebar = ref({
+    selectedFileName: '',
     detectedObjects: <[number, number][][]>[],
 });

@@ -7,7 +7,7 @@
     import { useRouter } from 'vue-router';
     import { findObjects } from '@/lib/findObjects';
     import { repairConfig, repairSidebar } from '@/data/RepairConfig';
-    import { savedModels } from '@/data/SavedModels';
+    import { templateFiles, stripNames } from '@/data/SavedModels';
     import { mapModels } from '@/lib/mapModels';
     import { printConfig } from '@/data/PrintConfig';
 
@@ -30,7 +30,8 @@
     const preparePrintModels = async () => {
         timer.value?.resetTimer();
         printTime.value = 30;
-        const brokenModels = mapModels(deepToRaw(savedModels.value!), deepToRaw(repairSidebar.value.detectedObjects))
+        const template = stripNames(templateFiles.value[repairSidebar.value.selectedFileName]);
+        const brokenModels = mapModels(deepToRaw(template), deepToRaw(repairSidebar.value.detectedObjects))
             .filter(([, , coeff]) => coeff >= repairConfig.value.brokenIndex!)
             .map(([templ, , coeff]) => ({ model: templ, coeff: coeff }));
         printConfig.value.brokenModels = brokenModels;
@@ -50,7 +51,7 @@
 <template>
     <div class="flex flex-col m-4 p-4 gap-2 h-[90vh]">
         <Glassy class="max-h-[80vh] p-4 h-4/5">
-            <Camera ref="camera" class="h-3/5 aspect-video" :resolution="{ width: 600, height: 337 }" />
+            <Camera ref="camera" :resolution="{ width: 600, height: 337 }" />
         </Glassy>
         <Timer ref="timer" @time-out="checkModels" />
         <Glassy class="flex justify-center">

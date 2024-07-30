@@ -3,6 +3,7 @@
     import { repairConfig, repairSidebar } from '@/data/RepairConfig';
     import Glassy from '../Glassy.vue';
     import { zip } from '@/lib/utils';
+    import { templateFiles } from '@/data/SavedModels';
     const navOpened = ref(true);
     const cssNav = computed(() => +navOpened.value);
     const toggleNav = () => (navOpened.value = !navOpened.value);
@@ -29,6 +30,22 @@
     <div class="nav max-h-full bg-zinc-800">
         <i @click="toggleNav" class="fas fa-chevron-left p-2 inline"></i>
         <div class="nav-inner" v-show="navOpened">
+            <h1 class="p-2 font-bold inline m-4 text-center truncate">Recent Files</h1>
+            <div class="h-[15vh] flex flex-col space-between p-2 gap-2 overflow-auto z-10">
+                <div
+                    v-for="(_, fileName) in templateFiles"
+                    :class="`rounded border-2 border-zinc-500 ${
+                        fileName === repairSidebar.selectedFileName && 'bg-white text-black border-0'
+                    }`"
+                >
+                    <div
+                        @click="repairSidebar.selectedFileName = <string>fileName"
+                        class="relative flex flex-wrap flex-shrink items-center justify-between px-2 p-1"
+                    >
+                        <p>{{ fileName }}.templ</p>
+                    </div>
+                </div>
+            </div>
             <h1 class="font-bold text-2xl m-4">Repair Settings</h1>
             <div class="grid grid-cols-2 gap-4 m-4">
                 <template v-for="(val, config) in repairConfig">

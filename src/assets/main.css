@@ -11,6 +11,7 @@
 
 * {
     font-family: "Space Mono", "Mindustry", monospace;
+    font-variant-ligatures: none;
     scrollbar-color: #ffffff6c transparent;
     scrollbar-width: thin;
 }

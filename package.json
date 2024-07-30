@@ -14,6 +14,7 @@
     "@tresjs/cientos": "^3.9.0",
     "@tresjs/core": "^4.2.3",
     "autoprefixer": "^10.4.19",
+    "jszip": "^3.10.1",
     "opencv-ts": "^1.3.6",
     "postcss": "^8.4.39",
     "simple-vue-camera": "^1.1.3",
