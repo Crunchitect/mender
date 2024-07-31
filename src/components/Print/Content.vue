@@ -7,18 +7,22 @@
 
     const shape = ref<THREE.Shape>(new THREE.Shape());
 
+    const mesh = shallowRef<TresInstance>();
     const geometry = shallowRef<TresInstance>();
 
     const updatePreview = () => {
         const selectedModel = printConfig.value.brokenModels[printConfig.value.selectedIndex];
         console.log(printConfig.value.brokenModels);
         if (selectedModel == undefined) return;
+        shape.value = new THREE.Shape();
         shape.value.moveTo(...selectedModel.model[0]);
         for (let i = 1; i < selectedModel.model.length; i++) {
             shape.value.lineTo(...selectedModel.model[i]);
         }
         shape.value.lineTo(...selectedModel.model[0]);
-        if (geometry.value) geometry.value!.args = [toRaw(shape.value), { step: 1, depth: 2 }];
+        if (mesh.value)
+            mesh.value.geometry = new THREE.ExtrudeGeometry(shape.value, { depth: printConfig.value.depth });
+        // if (geometry.value) geometry.value!.parameters.shapes = shape.value;
     };
 
     watchEffect(updatePreview);
@@ -28,9 +32,9 @@
 <template>
     <div class="w-full h-full">
         <TresCanvas>
-            <TresPerspectiveCamera />
+            <TresPerspectiveCamera :position="[50, 50, 50]" />
             <OrbitControls />
-            <TresMesh :rotation="[90, 0, 0]">
+            <TresMesh ref="mesh" :rotation="[90, 0, 0]">
                 <TresExtrudeGeometry ref="geometry" :args="[shape, { step: 1, depth: 2 }]" />
                 <TresMeshToonMaterial color="white" />
             </TresMesh>

@@ -24,7 +24,7 @@
         <i @click="toggleNav" class="fas fa-chevron-left p-2 inline"></i>
         <div class="nav-inner" v-show="navOpened">
             <h1 class="font-bold text-2xl m-4">{{ printConfig.brokenModels.length }} model(s) to print.</h1>
-            <div class="h-[90vh] flex flex-col p-2 gap-2 overflow-auto z-10">
+            <div class="h-[85vh] flex flex-col p-2 gap-2 overflow-auto z-10">
                 <Glassy
                     @click="
                         () => {
@@ -36,11 +36,15 @@
                     <div
                         class="relative flex flex-wrap flex-shrink flex-col items-center justify-evenly gap-4 before:content-[''] min-h-24 min-w-48"
                     >
+                        <i
+                            @click="printConfig.brokenModels = printConfig.brokenModels.filter((_, i) => i !== index)"
+                            class="fas fa-trash hover:text-red-500 absolute top-0 left-0 p-4"
+                        ></i>
                         <svg class="aspect-square" width="20%" height="20%" :viewBox="getBBox(model.model)">
                             <polyline :points="model.model.join(' ')" fill="white"></polyline>
                         </svg>
                         <p>Size: {{ getSize(model.model)[0] }}mm x {{ getSize(model.model)[1] }}mm</p>
-                        <p>Broken Coeff.: {{ model.coeff.toPrecision(3) }}</p>
+                        <p>Derelict Value: {{ model.coeff.toPrecision(3) }}</p>
                     </div>
                 </Glassy>
             </div>

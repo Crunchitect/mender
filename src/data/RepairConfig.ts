@@ -10,4 +10,6 @@ export const repairConfig = ref({
 export const repairSidebar = ref({
     selectedFileName: '',
     detectedObjects: <[number, number][][]>[],
+    brokenObjects: <{ model: [number, number][]; coeff: number }[]>[],
+    map: <[[number, number][], [number, number][], number][]>[],
 });

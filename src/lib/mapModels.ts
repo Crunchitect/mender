@@ -29,6 +29,8 @@ export function mapModels(template: [number, number][][], brokenModels: [number,
         templateCopy.splice(templIndex, 1);
         brokenModelsCopy.splice(brokenIndex, 1);
     }
+    templateCopy.forEach((templ) => mappedModels.push([templ, [], Infinity]));
+    brokenModelsCopy.forEach((broken) => mappedModels.push([[], broken, -Infinity]));
     // console.log(mappedModels);
     return mappedModels;
 }

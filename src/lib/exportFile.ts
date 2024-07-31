@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { STLExporter } from 'three/examples/jsm/exporters/STLExporter.js';
 import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
 import JSZip from 'jszip';
+import { printConfig } from '@/data/PrintConfig';
 
 type Polygons = { [name: string]: [number, number][] };
 type Extensions = 'TEMPL' | 'OBJ' | 'STL';
@@ -39,7 +40,7 @@ export async function exportFile(templ: Polygons, fileName: string, extension: E
                     shape.lineTo(...poly[i]);
                 }
                 shape.lineTo(...poly[0]);
-                const geometry = new THREE.ExtrudeGeometry(shape, { depth: 0.2 });
+                const geometry = new THREE.ExtrudeGeometry(shape, { depth: printConfig.value.depth });
                 const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
                 const mesh = new THREE.Mesh(geometry, material);
                 const text = stl.parse(mesh);
@@ -60,7 +61,7 @@ export async function exportFile(templ: Polygons, fileName: string, extension: E
                     shape.lineTo(...poly[i]);
                 }
                 shape.lineTo(...poly[0]);
-                const geometry = new THREE.ExtrudeGeometry(shape, { depth: 0.2 });
+                const geometry = new THREE.ExtrudeGeometry(shape, { depth: printConfig.value.depth });
                 const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
                 const mesh = new THREE.Mesh(geometry, material);
                 const text = obj.parse(mesh);

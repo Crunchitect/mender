@@ -1,12 +1,16 @@
 <script lang="ts" setup>
     import { ref, computed, watch } from 'vue';
+    import { useRouter } from 'vue-router';
     import { zip } from '@/lib/utils';
     import { openedFileName, templateFiles } from '@/data/SavedModels';
     import { exportFile } from '@/lib/exportFile';
+    import { printConfig } from '@/data/PrintConfig';
 
     const navOpened = ref(true);
     const cssNav = computed(() => +navOpened.value);
     const toggleNav = () => (navOpened.value = !navOpened.value);
+
+    const router = useRouter();
 
     const editableTemplateFiles = ref(Object.entries(templateFiles.value));
     const exportExtension = ref<'TEMPL' | 'STL' | 'OBJ'>('TEMPL');
@@ -40,7 +44,14 @@
         const name = input.files![0].name.replace(/\.templ$/, '');
         const content = JSON.parse(await input.files![0].text());
         editableTemplateFiles.value.push([name, content]);
-    }
+    };
+
+    const addToPrintQueue = () => {
+        Object
+            .values(templateFiles.value[openedFileName.value!])
+            .forEach(model => printConfig.value.brokenModels.push({model, coeff: Infinity}));
+        router.push('/print');
+    };
 
     watch(
         editableTemplateFiles,
@@ -114,7 +125,7 @@
             </div>
             <div class="flex flex-col gap-2">
                 <div class="rounded border-2 border-zinc-500">
-                    <button @click="" class="w-full h-full">
+                    <button @click="addToPrintQueue" class="w-full h-full">
                         <i class="fas fa-screwdriver-wrench"></i> Print Template
                     </button>
                 </div>

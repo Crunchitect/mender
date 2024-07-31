@@ -10,7 +10,7 @@
             <h1 class="line-clamp-4 align-center font-bold">Mender</h1>
         </div>
         <div class="flex items-center space-evenly gap-4">
-            <RouterLink to="/">Models</RouterLink>
+            <RouterLink to="/">Files</RouterLink>
             <RouterLink to="/repair">Repair</RouterLink>
             <RouterLink to="/print">Print</RouterLink>
             <RouterLink to="/dashboard">Dashboard</RouterLink>

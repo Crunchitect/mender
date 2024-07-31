@@ -10,6 +10,7 @@
     import { templateFiles, stripNames } from '@/data/SavedModels';
     import { mapModels } from '@/lib/mapModels';
     import { printConfig } from '@/data/PrintConfig';
+    import type { RefSymbol } from '@vue/reactivity';
 
     const router = useRouter();
 
@@ -25,16 +26,28 @@
             imgTag.onload = r;
         });
         repairSidebar.value.detectedObjects = findObjects(imgTag);
+        const template = stripNames(templateFiles.value[repairSidebar.value.selectedFileName]);
+        repairSidebar.value.map = mapModels(deepToRaw(template), deepToRaw(repairSidebar.value.detectedObjects));
+        const brokenModels = mapModels(deepToRaw(template), deepToRaw(repairSidebar.value.detectedObjects))
+            .filter(([, , coeff]) => coeff >= repairConfig.value.brokenIndex!)
+            .map(([templ, , coeff]) => ({ model: templ, coeff: coeff }));
+        repairSidebar.value.brokenObjects = brokenModels;
     };
+
+    watch([() => repairSidebar.value.selectedFileName, () => repairSidebar.value.detectedObjects], () => {
+        const template = stripNames(templateFiles.value[repairSidebar.value.selectedFileName]);
+        repairSidebar.value.map = mapModels(deepToRaw(template), deepToRaw(repairSidebar.value.detectedObjects));
+        const brokenModels = repairSidebar.value.map
+            .filter(([, , coeff]) => coeff >= repairConfig.value.brokenIndex!)
+            .map(([templ, , coeff]) => ({ model: templ, coeff: coeff }));
+        repairSidebar.value.brokenObjects = brokenModels;
+        console.log('hello');
+    });
 
     const preparePrintModels = async () => {
         timer.value?.resetTimer();
         printTime.value = 30;
-        const template = stripNames(templateFiles.value[repairSidebar.value.selectedFileName]);
-        const brokenModels = mapModels(deepToRaw(template), deepToRaw(repairSidebar.value.detectedObjects))
-            .filter(([, , coeff]) => coeff >= repairConfig.value.brokenIndex!)
-            .map(([templ, , coeff]) => ({ model: templ, coeff: coeff }));
-        printConfig.value.brokenModels = brokenModels;
+        printConfig.value.brokenModels = repairSidebar.value.brokenObjects;
         router.push('/print');
     };
 
@@ -55,7 +68,9 @@
         </Glassy>
         <Timer ref="timer" @time-out="checkModels" />
         <Glassy class="flex justify-center">
-            <button @click="checkModels"><i class="fa fa-search"></i> Check Models!</button>
+            <button @click="checkModels">
+                <i class="fa fa-search"></i> Compare with {{ repairSidebar.selectedFileName }}.templ
+            </button>
         </Glassy>
         <button
             class="flex-shrink h-fit w-full border-green-950 border-2 bg-green-500/30 hover:bg-green-500 p-2 px-4 my-2 rounded-lg transition-all disabled:opacity-10 disabled:bg-green-500/30"

@@ -12,8 +12,8 @@
 
         mouse.value!.animate(
             {
-                left: `${clientX}px`,
-                top: `${clientY}px`,
+                left: `${clientX - 16}px`,
+                top: `${clientY - 16}px`,
             },
             { duration: 1000, fill: 'forwards' }
         );
@@ -29,6 +29,9 @@
         <Navbar />
         <RouterView />
 
-        <div ref="mouse" class="absolute rounded-full w-8 aspect-square bg-white blur-md left-0 top-0"></div>
+        <div
+            ref="mouse"
+            class="absolute rounded-full w-8 aspect-square bg-white blur-md left-0 top-0 pointer-events-none"
+        ></div>
     </div>
 </template>
