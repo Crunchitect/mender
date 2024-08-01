@@ -32,7 +32,8 @@
     <div class="w-full h-full flex gap-4 p-4 transition-all">
         <div class="w-3/5 h-full flex flex-col gap-4">
             <h1 class="font-bold text-4xl">
-                Printing Model {{ (dashboardData.progressAll / 100) * printConfig.brokenModels.length + 1 }}/{{
+                Printing Model
+                {{ Math.round((dashboardData.progressAll / 100) * printConfig.brokenModels.length + 1) }}/{{
                     printConfig.brokenModels.length
                 }}
             </h1>

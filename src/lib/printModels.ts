@@ -5,6 +5,8 @@ import * as THREE from 'three';
 import { STLExporter } from 'three/examples/jsm/exporters/STLExporter.js';
 import { dashboardData } from '@/data/Printing';
 
+const sleep = async (ms: number) => await new Promise((f) => setTimeout(f, ms));
+
 export async function exportFile(ext: string) {
     const encoder = new TextEncoder();
     const extension = <'STL' | 'OBJ' | 'TEMPL' | 'GCODE'>ext;
@@ -112,11 +114,13 @@ async function printGCode(port: SerialPort, gcode: string) {
         }
         const encoder = new TextEncoder();
         const writer = port.writable.getWriter();
-        console.log(`Instruction #${gCodeDone}: ${instruction}`);
-        await writer.write(encoder.encode(instruction + '\n'));
+        console.log(`Instruction #${gCodeDone}: ${formatted}`);
+        const encoded = encoder.encode(formatted + '\r\n');
+        console.log(encoded);
+        await writer.write(encoded);
         writer.releaseLock();
 
-        console.log('written');
+        // console.log('written');
         const aborter = new AbortController();
         const decoder = new TextDecoderStream();
         const readableStreamClosed = port.readable.pipeTo(decoder.writable);
@@ -125,10 +129,11 @@ async function printGCode(port: SerialPort, gcode: string) {
         let resp = '';
         while (true) {
             const { value, done } = await reader.read();
+            console.log('read!');
             console.log(resp, value);
             resp += value;
             console.log(encoder.encode(value));
-            if (done || resp.includes('\n')) {
+            if (done || resp.split('\n').filter((line) => line.match(/^ok/)).length) {
                 break;
             }
         }
