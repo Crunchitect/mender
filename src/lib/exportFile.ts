@@ -7,27 +7,27 @@ import { printConfig } from '@/data/PrintConfig';
 type Polygons = { [name: string]: [number, number][] };
 type Extensions = 'TEMPL' | 'OBJ' | 'STL';
 
+export function downloadText(text: string, fileName: string, ext: string): void {
+    const encoder = new TextEncoder();
+    const url = URL.createObjectURL(new Blob([encoder.encode(text)]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${fileName}.${ext.toLowerCase()}`;
+    link.click();
+}
+
+export function downloadBlob(blob: Blob, fileName: string): void {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${fileName}.zip`;
+    link.click();
+}
+
 export async function exportFile(templ: Polygons, fileName: string, extension: Extensions) {
-    const downloadText = (text: string) => {
-        const encoder = new TextEncoder();
-        const url = URL.createObjectURL(new Blob([encoder.encode(text)]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${fileName}.${extension.toLowerCase()}`;
-        link.click();
-    };
-
-    const downloadBlob = (blob: Blob) => {
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${fileName}.zip`;
-        link.click();
-    };
-
     switch (extension) {
         case 'TEMPL':
-            downloadText(JSON.stringify(templ));
+            downloadText(JSON.stringify(templ), fileName, extension);
             return;
         case 'STL': {
             const zip = new JSZip();
@@ -47,7 +47,7 @@ export async function exportFile(templ: Polygons, fileName: string, extension: E
                 zip.file(`${name}.stl`, text);
             }
             const blob = await zip.generateAsync({ type: 'blob' });
-            downloadBlob(blob);
+            downloadBlob(blob, fileName);
             return;
         }
         case 'OBJ': {
@@ -68,7 +68,7 @@ export async function exportFile(templ: Polygons, fileName: string, extension: E
                 zip.file(`${name}.obj`, text);
             }
             const blob = await zip.generateAsync({ type: 'blob' });
-            downloadBlob(blob);
+            downloadBlob(blob, fileName);
             return;
         }
     }

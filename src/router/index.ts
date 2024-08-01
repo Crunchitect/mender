@@ -22,6 +22,11 @@ const router = createRouter({
             name: '3D Print',
             component: () => import('@/views/Print.vue'),
         },
+        {
+            path: '/dashboard',
+            name: 'Dashboard',
+            component: () => import('@/views/Dashboard.vue'),
+        },
     ],
 });
 

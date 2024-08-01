@@ -1,13 +1,12 @@
 <script lang="ts" setup>
     import { RouterLink } from 'vue-router';
-    import Mender from '@/components/icons/Mender.vue';
 </script>
 
 <template>
     <div class="bg-zinc-950 w-screen h-max-1/5 flex justify-between p-2 z-50">
         <div class="heading flex flex-wrap items-center gap-4">
-            <Mender />
-            <h1 class="line-clamp-4 align-center font-bold">Mender</h1>
+            <img src="../assets/favicon.svg" alt="" />
+            <h1 class="line-clamp-4 align-center font-bold">Fixfuse</h1>
         </div>
         <div class="flex items-center space-evenly gap-4">
             <RouterLink to="/">Files</RouterLink>

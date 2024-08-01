@@ -1,4 +1,5 @@
 import './assets/main.css';
+import './serial.d.ts';
 
 import { createApp } from 'vue';
 import App from './App.vue';

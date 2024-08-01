@@ -10,7 +10,6 @@
     import { templateFiles, stripNames } from '@/data/SavedModels';
     import { mapModels } from '@/lib/mapModels';
     import { printConfig } from '@/data/PrintConfig';
-    import type { RefSymbol } from '@vue/reactivity';
 
     const router = useRouter();
 
