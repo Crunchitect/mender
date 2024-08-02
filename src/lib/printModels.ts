@@ -83,7 +83,7 @@ export async function printFile() {
         const mesh = new THREE.Mesh(geometry, material);
         const text = stl.parse(mesh);
         console.log('ws connected');
-        ws.send(text);
+        ws.send('stl%' + text);
         const gcode = await new Promise<string>((resolve) => {
             ws.onmessage = ({ data }) => {
                 // console.log(data);
@@ -97,6 +97,7 @@ export async function printFile() {
         console.log('printed');
         progressAll++;
         dashboardData.value.progressAll = ~~((progressAll / Object.keys(polygon).length) * 100);
+        await sleep(30 * 1000);
     }
 
     ws.close();
@@ -132,7 +133,14 @@ async function printGCode(port: SerialPort, gcode: string) {
             console.log('read!');
             console.log(resp, value);
             resp += value;
-            console.log(encoder.encode(value));
+            console.log(value?.replace(/\s|\n|\r/g, '').match(/T:(\d+)\/(\d+)B:(\d+)\/(\d+)/));
+            const temp = value?.replace(/\s|\n|\r/g, '').match(/T:(\d+)\/(\d+)B:(\d+)\/(\d+)/);
+            if (temp) {
+                dashboardData.value.extruderTemp = +temp[1];
+                dashboardData.value.extruderTargetTemp = +temp[2];
+                dashboardData.value.bedTemp = +temp[3];
+                dashboardData.value.bedTargetTemp = +temp[4];
+            }
             if (done || resp.split('\n').filter((line) => line.match(/^ok/)).length) {
                 break;
             }
@@ -148,4 +156,35 @@ async function printGCode(port: SerialPort, gcode: string) {
         console.log(`GCode inst finished`);
     }
     port.close();
+}
+
+export async function getPrinters() {
+    const ws = new WebSocket('ws://127.0.0.1:1533');
+    await new Promise<void>((resolve) => {
+        ws.onopen = () => resolve();
+    });
+    ws.send('printerlist%');
+    const slug = await new Promise<string>((resolve) => {
+        ws.onmessage = ({ data }) => {
+            // console.log(data);
+            resolve(data);
+        };
+    });
+    ws.close();
+    return <string[]>JSON.parse(slug);
+}
+
+export async function setPrinter(printer: string) {
+    const ws = new WebSocket('ws://127.0.0.1:1533');
+    await new Promise<void>((resolve) => {
+        ws.onopen = () => resolve();
+    });
+    ws.send(`printer%${printer}`);
+    await new Promise<string>((resolve) => {
+        ws.onmessage = ({ data }) => {
+            // console.log(data);
+            resolve(data);
+        };
+    });
+    ws.close();
 }

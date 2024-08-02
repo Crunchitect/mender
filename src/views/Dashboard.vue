@@ -54,7 +54,7 @@
                     <div class="flex gap-4 items-center m-2 p-2">
                         <div class="h-8 w-5/6 bg-zinc-950 rounded">
                             <div
-                                class="progressbar rounde h-full"
+                                class="progressbar rounded h-full"
                                 :style="{ width: `${dashboardData.progress}%` }"
                             ></div>
                         </div>
@@ -71,6 +71,34 @@
                             ></div>
                         </div>
                         <p>{{ dashboardData.progressAll }}%</p>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="font-bold text-2xl">Extruder Temperature</h1>
+                    <div class="flex gap-4 items-center m-2 p-2">
+                        <div class="h-8 w-5/6 bg-zinc-950 rounded">
+                            <div
+                                class="progressbar rounded h-full"
+                                :style="{
+                                    width: `${(dashboardData.extruderTemp / dashboardData.extruderTargetTemp) * 100}%`,
+                                }"
+                            ></div>
+                        </div>
+                        <p>{{ dashboardData.extruderTemp }}°C / {{ dashboardData.extruderTargetTemp }}°C</p>
+                    </div>
+                </div>
+                <div>
+                    <h1 class="font-bold text-2xl">Bedplate Temperature</h1>
+                    <div class="flex gap-4 items-center m-2 p-2">
+                        <div class="h-8 w-5/6 bg-zinc-950 rounded">
+                            <div
+                                class="progressbar rounded h-full"
+                                :style="{
+                                    width: `${(dashboardData.bedTemp / dashboardData.bedTargetTemp) * 100}%`,
+                                }"
+                            ></div>
+                        </div>
+                        <p>{{ dashboardData.bedTemp }}°C / {{ dashboardData.bedTargetTemp }}°C</p>
                     </div>
                 </div>
             </div>
@@ -103,6 +131,7 @@
         background-image: repeating-linear-gradient(-45deg, white 0px 20px, #ddd 20px 40px);
         background-size: 300%;
         animation: move 750ms linear 0s infinite forwards;
+        transition: all ease-in-out;
     }
 
     @keyframes move {
