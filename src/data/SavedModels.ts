@@ -7,7 +7,7 @@ export const templateFiles = ref<TemplateFiles>({ main: {} });
 export const openedFileName = ref<string>();
 
 export function fillNames(polys: [number, number][][]) {
-    // console.log(polys);
+    console.log(polys);
     const polygons: Polygons = {};
     for (const [index, poly] of polys.entries()) {
         polygons[`polygon${index}`] = poly;
@@ -23,6 +23,6 @@ export function stripNames(polys: Polygons) {
 }
 
 export function saveFile(name: string, file: Polygons) {
-    // console.log(name, file);
+    console.log(name, file);
     templateFiles.value![name] = file;
 }

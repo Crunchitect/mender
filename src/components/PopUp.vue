@@ -20,7 +20,7 @@
                 <button
                     class="border-2 border-green-500 bg-green-400/30 hover:bg-green-400 p-2 m-4 rounded transition-all"
                 >
-                    <i class="fas fa-download"></i> Install <b>Fixfuse Slicer 2.0.0</b>
+                    <i class="fas fa-download"></i> Install <b>Fixfuse Slicer 2.0.1</b>
                 </button>
             </a>
             <p class="m-4">Then <b>Extract</b> and run <code class="bg-zinc-950 p-4">server.exe</code></p>

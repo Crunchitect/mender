@@ -3,7 +3,7 @@ import { cross } from './utils';
 import cv from 'opencv-ts';
 
 export function mapModels(template: [number, number][][], brokenModels: [number, number][][]) {
-    // console.log(template, brokenModels);
+    console.log(template, brokenModels);
     const templateCopy = structuredClone(template);
     const brokenModelsCopy = structuredClone(brokenModels);
     const mappedModels: [[number, number][], [number, number][], number][] = [];
@@ -31,6 +31,6 @@ export function mapModels(template: [number, number][][], brokenModels: [number,
     }
     templateCopy.forEach((templ) => mappedModels.push([templ, [], Infinity]));
     brokenModelsCopy.forEach((broken) => mappedModels.push([[], broken, -Infinity]));
-    // console.log(mappedModels);
+    console.log(mappedModels);
     return mappedModels;
 }

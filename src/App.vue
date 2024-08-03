@@ -4,8 +4,10 @@
     import Navbar from '@/components/Navbar.vue';
     import PopUp from '@/components/PopUp.vue';
     import { templateFiles } from './data/SavedModels';
+    import SettingsPopup from './components/Repair/SettingsPopup.vue';
 
     const mouse = ref<HTMLDivElement>();
+    const settings = ref<InstanceType<typeof SettingsPopup>>();
 
     const mouseMove = (e: Event) => {
         //@ts-ignore
@@ -30,6 +32,7 @@
         <Navbar />
         <RouterView />
         <PopUp />
+        <SettingsPopup ref="settings" />
         <div
             ref="mouse"
             class="absolute rounded-full w-8 aspect-square bg-white blur-md left-0 top-0 pointer-events-none"

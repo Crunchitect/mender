@@ -46,7 +46,7 @@
     const preparePrintModels = async () => {
         timer.value?.resetTimer();
         printTime.value = 30;
-        printConfig.value.brokenModels = repairSidebar.value.brokenObjects;
+        repairSidebar.value.brokenObjects.forEach((el) => printConfig.value.brokenModels.push(el));
         router.push('/print');
     };
 

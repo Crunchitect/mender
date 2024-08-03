@@ -1,7 +1,8 @@
 import cv, { type Mat } from 'opencv-ts';
 
 type PointArr = [number, number][];
-const epsilon = 0.02;
+const epsilon = 0.015;
+const minArea = 50;
 
 export function detectEdges(img: Mat): Mat {
     const cannyCoeff = 0.33;
@@ -138,8 +139,9 @@ export function detectObjects(img: Mat, debug: boolean = false, debugImg: Mat | 
         const contour = contours.get(i);
         const perimiter = cv.arcLength(contour, true);
         const approxPoly = new cv.Mat();
-        cv.approxPolyDP(contour, approxPoly, epsilon * 3 * perimiter, true);
-        const points = sortPointsCW(getPoints(approxPoly));
+        cv.approxPolyDP(contour, approxPoly, epsilon * perimiter, true);
+        const points = sortPointsCW(getPoints(approxPoly, true, debugImg));
+        if (cv.contourArea(approxPoly) < minArea) continue;
         shapes.push(points);
         contour.delete();
         approxPoly.delete();
@@ -190,7 +192,7 @@ export function findObjects(src: string | HTMLImageElement | HTMLCanvasElement =
     const scanPlate = cropToPoints(img, orderedPoints, imgSize);
     const buildObjects = detectObjects(scanPlate, true, scanPlate);
     // cv.imshow('hey', scanPlate);
-    // console.log(buildObjects);
+    console.log(buildObjects);
 
     cleanup(img, edges, scanPlateContour!, scanPlate);
     return cleanPolys(buildObjects);

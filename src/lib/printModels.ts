@@ -86,7 +86,7 @@ export async function printFile() {
         ws.send('stl%' + text);
         const gcode = await new Promise<string>((resolve) => {
             ws.onmessage = ({ data }) => {
-                // console.log(data);
+                console.log(data);
                 resolve(data);
             };
         });
@@ -121,7 +121,7 @@ async function printGCode(port: SerialPort, gcode: string) {
         await writer.write(encoded);
         writer.releaseLock();
 
-        // console.log('written');
+        console.log('written');
         const aborter = new AbortController();
         const decoder = new TextDecoderStream();
         const readableStreamClosed = port.readable.pipeTo(decoder.writable);
@@ -166,7 +166,7 @@ export async function getPrinters() {
     ws.send('printerlist%');
     const slug = await new Promise<string>((resolve) => {
         ws.onmessage = ({ data }) => {
-            // console.log(data);
+            console.log(data);
             resolve(data);
         };
     });
@@ -182,7 +182,7 @@ export async function setPrinter(printer: string) {
     ws.send(`printer%${printer}`);
     await new Promise<string>((resolve) => {
         ws.onmessage = ({ data }) => {
-            // console.log(data);
+            console.log(data);
             resolve(data);
         };
     });
